@@ -54,17 +54,17 @@ def collatzIterative(positiveInt, toPrint):
             
     return convergencePath
     
-def collatzTest(numList, debug):
+def collatzTest(intList, debug):
     """
     Input: numList - List of positive integers or longs
         debug - prints number trajectory mid-program
     Output: convergenceList - List of tuples (num, convergence time)
     """
     
-    assert type(numList) == list
+    assert type(intList) == list
     convergenceList = []
     
-    for i in numList:
+    for i in intList:
         convergenceList.append((i, len(collatzIterative(i, False))))
         if debug:
             print convergenceList[-1]
@@ -79,10 +79,29 @@ def collatzPathGraph(positiveInt):
     Input: positiveInt - Starting point for collatz path
     """
     
-    pylab.plot(collatzIterative(positiveInt, False))
+    pylab.plot(collatzIterative(positiveInt, False), '.')
     pylab.title("Collatz Path for %s" % positiveInt)
     pylab.ylabel("Number at Collatz step")
     pylab.xlabel("Collatz step")
+    pylab.show()
+    
+def collatzConvergenceGraph(intList):
+    """
+    Graphs intList on the x axis against the associated
+    convergence times on the y axis
+    
+    Input: intList - numbers to be inserted into the
+    collatz function
+    """
+    
+    numSteps = []
+    for i in intList:
+        numSteps.append(len(collatzIterative(i, False)))
+        
+    pylab.plot(intList, numSteps, '.')
+    pylab.title("Convergence Times vs Starting Point")
+    pylab.ylabel("Number of steps taken to converge")
+    pylab.xlabel("Starting point")
     pylab.show()
     
 # Function TODO List
