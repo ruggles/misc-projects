@@ -90,8 +90,7 @@ def collatzConvergenceGraph(intList):
     Graphs intList on the x axis against the associated
     convergence times on the y axis
     
-    Input: intList - numbers to be inserted into the
-    collatz function
+    Input: intList - List of integers
     """
     
     numSteps = []
@@ -104,5 +103,3 @@ def collatzConvergenceGraph(intList):
     pylab.xlabel("Starting point")
     pylab.show()
     
-# Function TODO List
-# Graph convergence times for multiple numbers in a series
