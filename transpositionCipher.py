@@ -38,7 +38,7 @@ def transpose(message, key):
     message = stringFilter(message)
     
     """
-    TODO: convert message into a list of strings, where
+    Convert message into a list of strings, where
     each string is of length len(key)
     
     Each letter should be callable using grid[i][j] 
@@ -48,5 +48,19 @@ def transpose(message, key):
     Then build a new string by calling grid[i][j] where
     j is called in the order of the key for each i. 
     """
+    encodingGrid = []
+    message = message + ' '*(len(key) - len(message)%len(key))
+    while len(message) > 0:
+        encodingGrid.append(message[:len(key)])
+        message = message[len(key):]
+    
+    encodedMessage = ''    
+    for j in key:
+        for i in range(len(encodingGrid)):
+            encodedMessage += encodingGrid[i][j-1]
+        
+    return encodingGrid, encodedMessage
+    
+#print transpose("blue is a good dog", [1,3,2])
     
 
