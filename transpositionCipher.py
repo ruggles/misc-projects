@@ -46,9 +46,18 @@ def transpose(message, key):
     encodedMessage = ''    
     # Reads each column up to down in order of the key.
     # i.e. if key is [1,3,2], read first column, then third, then second
+    readKey = []
+    for i in key:
+        readKey.append(0)
+        
+    index = 0
     for j in key:
+        readKey[j-1] = index + 1
+        index += 1
+
+    for j in readKey:
         for i in range(len(encodingGrid)):
-            encodedMessage += encodingGrid[i][j-1]
+            encodedMessage += encodingGrid[i][j - 1]
             
     return encodedMessage
     
@@ -71,6 +80,11 @@ def buildGrid(message, length):
     return grid
     
 def inverseTranspose(encodedMessage, key):
+    """
+    Decodes a string which has been transposed using the given key.
+    """
+    assert type(message) == str
+    assert type(key) == list
     
     decodingGrid = buildGrid(encodedMessage, len(encodedMessage)/len(key))
     
@@ -85,18 +99,25 @@ def inverseTranspose(encodedMessage, key):
             
     return decodedMessage
 
-# Quick Example
+# Quick Test
 if __name__ == '__main__':    
     message = "Blue is a good dog."
-    key = [1,3,2]
-    encodedMessage = transpose(message, key)
+    keys = [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
     print "Message: ", message
-    print "Key: ", key
-    print "Encrypted Message: ", encodedMessage
     
-    decodedMessage = inverseTranspose(encodedMessage, key)
-            
-    print "Decrypted Message: ", decodedMessage
+    for key in keys:
+    
+        encodedMessage = transpose(message, key)
+        print "Key: ", key
+        print "Encrypted Message: ", encodedMessage
+        decodedMessage = inverseTranspose(encodedMessage, key)       
+        print "Decrypted Message: ", decodedMessage
+        
+        if decodedMessage == "BLUEISAGOODDOGX":
+            print "TEST PASSED"
+        else:
+            print "TEST FAILED"
+        
 
     
 
