@@ -37,24 +37,15 @@ def transpose(message, key):
     
     message = stringFilter(message)
     
-    """
-    Convert message into a list of strings, where
-    each string is of length len(key)
-    
-    Each letter should be callable using grid[i][j] 
-    notation, where sequentially calling grid[i]
-    will reconstruct the original string
-    
-    Then build a new string by calling grid[i][j] where
-    j is called in the order of the key for each i. 
-    """
-    
+    # If message isn't evenly divisible by len(key), pad it with X
     if len(message)%len(key) != 0:
         message += 'X'*(len(key) - len(message)%len(key))
         
     encodingGrid = buildGrid(message, len(key))
     
     encodedMessage = ''    
+    # Reads each column up to down in order of the key.
+    # i.e. if key is [1,3,2], read first column, then third, then second
     for j in key:
         for i in range(len(encodingGrid)):
             encodedMessage += encodingGrid[i][j-1]
@@ -67,21 +58,45 @@ def buildGrid(message, length):
     where each string is of that integer length. This makes
     it easily callable using grid[i][j] notation
     """
+    assert type(length) == int and length > 0
+    assert type(message) == str
     
-    encodingGrid = []
+    grid = []
     
     while len(message) > 0:
-        encodingGrid.append(message[:length])
+        grid.append(message[:length])
         message = message[length:]
+        #print message, encodingGrid
         
-    return encodingGrid
+    return grid
+    
+def inverseTranspose(encodedMessage, key):
+    
+    decodingGrid = buildGrid(encodedMessage, len(encodedMessage)/len(key))
+    
+    decodedMessage = ''
+    # Read decodingGrid column by column left to right
+    # Read each character in column according to the order
+    # in key. i.e. key = [1,3,2] Read first character, then
+    # third character, then last.
+    for j in range(len(encodedMessage)/len(key)):
+        for i in key:
+            decodedMessage += decodingGrid[i-1][j]
+            
+    return decodedMessage
 
 # Quick Example
 if __name__ == '__main__':    
     message = "Blue is a good dog."
     key = [1,3,2]
-    print message
-    print key
-    print transpose(message, key)
+    encodedMessage = transpose(message, key)
+    print "Message: ", message
+    print "Key: ", key
+    print "Encrypted Message: ", encodedMessage
+    
+    decodedMessage = inverseTranspose(encodedMessage, key)
+            
+    print "Decrypted Message: ", decodedMessage
+
     
 
