@@ -52,12 +52,12 @@ def transpose(message, key):
         
     index = 0
     for j in key:
-        readKey[j-1] = index + 1
+        readKey[j-1] = index
         index += 1
 
     for j in readKey:
         for i in range(len(encodingGrid)):
-            encodedMessage += encodingGrid[i][j - 1]
+            encodedMessage += encodingGrid[i][j]
             
     return encodedMessage
     
@@ -83,7 +83,7 @@ def inverseTranspose(encodedMessage, key):
     """
     Decodes a string which has been transposed using the given key.
     """
-    assert type(message) == str
+    assert type(encodedMessage) == str
     assert type(key) == list
     
     decodingGrid = buildGrid(encodedMessage, len(encodedMessage)/len(key))
@@ -98,13 +98,29 @@ def inverseTranspose(encodedMessage, key):
             decodedMessage += decodingGrid[i-1][j]
             
     return decodedMessage
+    
+def doubleTranspose(message, key1, key2):
+    """
+    Applies the transposition cipher twice to the message
+    The first run uses key 1, second run uses key 2
+    """
+    
+    return transpose(transpose(message, key1), key2)
+    
+def doubleInverse(message, key1, key2):
+    """
+    Decrypts a double transposed message, where key1 was the first key
+    applied and key2 was the second key applied.
+    """
 
+    return inverseTranspose(inverseTranspose(encodedMessage, key2), key1)
+    
 # Quick Test
 if __name__ == '__main__':    
     message = "Blue is a good dog."
     keys = [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
     print "Message: ", message
-    
+    print "\nTranspose Test"
     for key in keys:
     
         encodedMessage = transpose(message, key)
@@ -117,6 +133,21 @@ if __name__ == '__main__':
             print "TEST PASSED"
         else:
             print "TEST FAILED"
+    
+    key1, key2 = [2,3,1], [3,1,2]        
+    print "\nDouble Transpose Test"
+    print "Message: ", message
+    print "First Key: ", key1
+    print "Second Key: ", key2
+    encodedMessage = doubleTranspose(message, key1, key2)
+    print "Encoded Message: ", encodedMessage
+    decodedMessage = doubleInverse(encodedMessage, key1, key2)
+    print "Decoded Message: ", decodedMessage
+    if decodedMessage == "BLUEISAGOODDOGX":
+        print "TEST PASSED"
+    else:
+        print "TEST FAILED"
+    
         
 
     
