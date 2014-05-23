@@ -34,8 +34,19 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((400, 300))
     pygame.display.set_caption('Ruggles Paint')
     
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    mouseColor = RED
+    
     while True:
         for event in pygame.event.get():
+            # if lmb is pushed
+            if True:
+                mouseX, mouseY = pygame.mouse.get_pos()
+                pixArray = pygame.PixelArray(DISPLAYSURF)
+                pixArray[mouseX][mouseY] = mouseColor
+            
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
