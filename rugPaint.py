@@ -31,7 +31,7 @@ def saveFile(imageObject):
     
 def main():
     pygame.init()
-    DISPLAYSURF = pygame.display.set_mode((400, 300))
+    DISPLAYSURF = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('Ruggles Paint')
     
     RED = (255, 0, 0)
@@ -41,11 +41,17 @@ def main():
     
     while True:
         for event in pygame.event.get():
-            # if lmb is pushed
-            if True:
+        
+            # if rmb is pushed    
+            if event.type == MOUSEBUTTONDOWN and event.button == 3:
+                pygame.image.save(DISPLAYSURF,"testshot.png")
+            
+            # if lmb is held down
+            if pygame.mouse.get_pressed()[0]:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 pixArray = pygame.PixelArray(DISPLAYSURF)
                 pixArray[mouseX][mouseY] = mouseColor
+                del pixArray
             
             if event.type == QUIT:
                 pygame.quit()
