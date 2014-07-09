@@ -2,15 +2,15 @@
 
 import os
 
-def buildTree(treeName, directory, relative = False):
+def buildTree(treeName, directory):
 	
 	treeFile = open(treeName, 'w')
 	
 	for root, filePath, fileName in os.walk(directory):
-		if relative:
-			root = root[len(directory):]
-			
-		treeFile.write(root + '\n')
+	
+		level = root.replace(directory, '').count(os.sep)
+		indent = ' ' * 4 * (level)
+		treeFile.write('{}{}/'.format(indent, os.path.basename(root)) + '\n')
 		
 	treeFile.close()
 	
